@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Facts</title>
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #111; /* Dark background */
+            color: #eee; /* Light text */
+            overflow-x: hidden; /* Prevent horizontal scroll on mobile */
+        }
+
+        #app {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 40px;
+            background-color: #181818; /* Slightly lighter background for contrast */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            color: #00f2fe; /* Neon blue heading */
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            text-shadow: 0 0 10px #00f2fe; /* Glow effect */
+        }
+
+        /* Fact Container Styling */
+        #facts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 20px; 
+            padding-bottom: 40px; /* Space for last fact card */
+        }
+
+        .fact {
+            display: none;
+            padding: 30px;
+            border-radius: 8px;
+            background-color: rgba(28, 28, 28, 0.9); /* Semi-transparent dark background */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: left;
+            overflow: hidden; 
+            color: #eee; /* Light text in fact cards */
+        }
+
+        .fact.show { 
+            display: block;
+        }
+
+        .fact:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .fact h2 {
+            margin: 0 0 15px;
+            font-size: 1.8em;
+            color: #ff00ff; /* Neon pink fact title */
+            text-shadow: 0 0 8px #ff00ff; /* Glow effect */
+        }
+
+        .fact p {
+            margin: 0;
+            line-height: 1.7;
+            color: #ddd; /* Slightly darker text for the description */
+            font-size: 1.1em;
+        }
+
+        /* Button Styling & Animation */
+        button {
+            background-color: #ff00ff; /* Neon pink button */
+            color: #111; /* Dark text */
+            padding: 14px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: all 0.3s ease; 
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            z-index: 1; /* Ensure button is above the expanding circle */
+        }
+
+        button:hover {
+            color: #fff; /* White text on hover */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); 
+        }
+
+        button:active {
+            transform: translateY(2px); 
+        }
+
+        /* Button Animation */
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background-color: rgba(255, 255, 255, 0.2); 
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: width 0.3s ease, height 0.3s ease, opacity 0.3s ease; 
+        }
+
+        button:hover::before {
+            width: 150%;
+            height: 150%;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Facts about Large Language Models (LLMs)</h1>
+        <button id="viewFactsBtn">View Facts</button>
+        <div id="facts-container"></div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const facts = [
+                {
+                    fact: "Large Language Models are a type of artificial intelligence designed to understand and generate human-like text based on the input they receive.",
+                    description: "They are trained on massive text datasets and excel at a variety of tasks."
+                },
+                {
+                    fact: "LLMs are trained on vast datasets that include text from books, websites, and other digital sources to learn language patterns, grammar, and context.",
+                    description: "LLMs are trained on vast datasets that include text from books, websites, and other digital sources to learn language patterns, grammar, and context."
+                },
+                {
+                    fact: "Most LLMs are based on transformer architecture, which allows them to process and generate text efficiently by focusing on the relationships between words in a sentence.",
+                    description: "Most LLMs are based on transformer architecture, which allows them to process and generate text efficiently by focusing on the relationships between words in a sentence."
+                },
+                {
+                    fact: "They are used in various applications, including chatbots, translation services, content creation, and even coding assistance.",
+                    description: "They are used in various applications, including chatbots, translation services, content creation, and even coding assistance."
+                },
+                {
+                    fact: "Some well-known LLMs include OpenAI's GPT series, Google's BERT, and Facebook's BART.",
+                    description: "Some well-known LLMs include OpenAI's GPT series, Google's BERT, and Facebook's BART."
+                },
+                {
+                    fact: "LLMs can be scaled up by increasing the number of parameters, which generally improves their performance but also requires more computational resources.",
+                    description: "LLMs can be scaled up by increasing the number of parameters, which generally improves their performance but also requires more computational resources."
+                },
+                {
+                    fact: "These models excel at understanding context, which allows them to generate coherent and contextually relevant responses.",
+                    description: "These models excel at understanding context, which allows them to generate coherent and contextually relevant responses."
+                },
+                {
+                    fact: "Despite their capabilities, LLMs can sometimes produce incorrect or nonsensical answers and are sensitive to the phrasing of input prompts.",
+                    description: "Despite their capabilities, LLMs can sometimes produce incorrect or nonsensical answers and are sensitive to the phrasing of input prompts."
+                },
+                {
+                    fact: "The use of LLMs raises ethical issues, such as the potential for generating biased or harmful content and the environmental impact of training large models.",
+                    description: "The use of LLMs raises ethical issues, such as the potential for generating biased or harmful content and the environmental impact of training large models."
+                },
+                {
+                    fact: "While LLMs are powerful, they do not learn from new interactions in real-time. They require retraining with updated data to improve or adapt to new information.",
+                    description: "While LLMs are powerful, they do not learn from new interactions in real-time. They require retraining with updated data to improve or adapt to new information."
+                }
+            ];
+
+            const factsContainer = document.getElementById('facts-container');
+            const viewFactsBtn = document.getElementById('viewFactsBtn');
+
+            viewFactsBtn.addEventListener('click', () => {
+                facts.forEach(item => {
+                    const factElement = document.createElement('div');
+                    factElement.classList.add('fact'); 
+                    factElement.classList.add('show');
+
+                    const factTitle = document.createElement('h2');
+                    factTitle.textContent = item.fact;
+
+                    const factDescription = document.createElement('p');
+                    factDescription.textContent = item.description;
+
+                    factElement.appendChild(factTitle);
+                    factElement.appendChild(factDescription);
+                    factsContainer.appendChild(factElement);
+                });
+
+                viewFactsBtn.style.display = 'none'; 
+            });
+        });
+    </script>
+</body>
+</html>
+
